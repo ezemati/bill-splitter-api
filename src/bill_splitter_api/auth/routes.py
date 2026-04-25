@@ -36,9 +36,7 @@ async def login(
         )
 
     return LoginResponse(
-        access_token=create_access_token(
-            data={"sub": str(user.id), "username": user.username, "email": user.email}
-        ),
+        access_token=create_access_token(user),
         refresh_token="fakerefreshtoken",
         user=UserResponse(
             id=user.id,

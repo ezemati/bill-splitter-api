@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from ..core import settings
 from ..models import User
+from .schemas import JWTFields
 
 password_hasher = PasswordHasher()
 
@@ -24,13 +25,20 @@ def get_password_hash(plain_password: str):
     return password_hasher.hash(plain_password)
 
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
-    to_encode = data.copy()
-    expires_delta = expires_delta or timedelta(minutes=15)
-    expire = datetime.now(timezone.utc) + expires_delta
-    to_encode["exp"] = expire
-    encoded_jwt = jwt.encode(to_encode, settings.jwt.secret_key, settings.jwt.algorithm)
-    return encoded_jwt
+def create_access_token(user: User):
+    exp_minutes = timedelta(minutes=settings.jwt.access_token_expire_minutes)
+    exp = datetime.now(timezone.utc) + exp_minutes
+    data = JWTFields(
+        sub=str(user.id),
+        username=user.username,
+        email=user.email,
+        exp=exp,
+    )
+    return jwt.encode(
+        data.model_dump(),
+        settings.jwt.secret_key,
+        settings.jwt.algorithm,
+    )
 
 
 def authenticate_user(session: Session, username: str, password: str) -> User | None:

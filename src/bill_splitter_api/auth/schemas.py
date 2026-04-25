@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -25,3 +26,10 @@ class UserResponse(BaseModel):
     id: UUID
     username: str
     email: str
+
+
+class JWTFields(BaseModel):
+    sub: str
+    username: str
+    email: str
+    exp: datetime

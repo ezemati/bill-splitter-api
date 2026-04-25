@@ -35,7 +35,6 @@ class ModelBase(Base):
     @declared_attr.directive
     def __tablename__(cls) -> str:
         table_name = pascal_to_snake(cls.__name__)
-        print(f"Generated __tablename__ for {cls.__name__}: {table_name}")
         return table_name
 
 
