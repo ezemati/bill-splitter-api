@@ -1,10 +1,27 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from pydantic import BaseModel
+from sqlalchemy import text
 
-from .auth.routes import router as auth_router
+from .admin import admin_router
+from .auth import auth_router
+from .db import engine
+from .dependencies import SessionDep
+from .models import ModelBase
+from .user import user_router
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    ModelBase.metadata.create_all(engine)
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 app.include_router(auth_router)
+app.include_router(admin_router)
+app.include_router(user_router)
 
 
 @app.get("/")
@@ -13,10 +30,11 @@ def root() -> dict[str, str]:
 
 
 class HealthCheckResponse(BaseModel):
-    status: str
-    message: str
+    api: str
+    db: str
 
 
 @app.get("/health")
-def health_check() -> HealthCheckResponse:
-    return HealthCheckResponse(status="ok", message="API is healthy")
+def health_check(session: SessionDep) -> HealthCheckResponse:
+    _ = session.execute(text("SELECT 1"))
+    return HealthCheckResponse(api="ok", db="ok")

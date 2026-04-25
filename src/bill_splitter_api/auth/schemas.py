@@ -15,7 +15,7 @@ class RegisterRequest(BaseModel):
 
 
 class LoginResponse(BaseModel):
-    token_type: str = "Bearer"
+    token_type: str = "bearer"
     access_token: str
     refresh_token: str
     user: UserResponse
