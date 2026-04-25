@@ -16,6 +16,9 @@ class DbSettings(BaseModel):
     host: str
     port: int
 
+    def get_sqlalchemy_url(self) -> str:
+        return f"postgresql+psycopg://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"
+
 
 class Settings(BaseSettings):
     jwt: JwtSettings

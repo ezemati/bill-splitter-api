@@ -8,15 +8,12 @@ from sqlalchemy import text
 from .admin import admin_router
 from .auth import auth_router
 from .bill import bill_router
-from .db import engine
 from .dependencies import SessionDep
-from .models import ModelBase
 from .user import user_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    ModelBase.metadata.create_all(engine)
     yield
 
 
