@@ -1,0 +1,17 @@
+services:
+  split_db:
+    image: postgres:alpine
+    restart: no
+    ports:
+      - "5432:5432"
+    env_file:
+      - ".env"
+    environment:
+      POSTGRES_USER: ${DB__USER}
+      POSTGRES_PASSWORD: ${DB__PASSWORD}
+      POSTGRES_DB: ${DB__NAME}
+    volumes:
+      - split_db_data:/var/lib/postgresql
+
+volumes:
+  split_db_data:
