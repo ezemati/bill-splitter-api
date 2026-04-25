@@ -26,3 +26,12 @@ build-backend = "uv_build"
 
 [tool.fastapi]
 entrypoint = "src.bill_splitter_api.main:app"
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.0",
+    "pytest>=9.0.3",
+    "pytest-asyncio>=0.25.0",
+    "ruff>=0.15.12",
+    "testcontainers[postgres]>=4.0.0",
+]
