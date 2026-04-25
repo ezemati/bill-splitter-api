@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 
+import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 from sqlalchemy import text
@@ -40,3 +41,11 @@ class HealthCheckResponse(BaseModel):
 def health_check(session: SessionDep) -> HealthCheckResponse:
     _ = session.execute(text("SELECT 1"))
     return HealthCheckResponse(api="ok", db="ok")
+
+
+def main():
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+if __name__ == "__main__":
+    main()

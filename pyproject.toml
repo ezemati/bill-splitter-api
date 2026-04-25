@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.scripts]
-bill-splitter-api = "bill_splitter_api:main"
+bill-splitter-api = "bill_splitter_api.main:main"
 
 [build-system]
 requires = ["uv_build>=0.9.22,<0.10.0"]
