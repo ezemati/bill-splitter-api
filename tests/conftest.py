@@ -14,7 +14,7 @@ from bill_splitter_api.models import User
 from bill_splitter_api.models.base import Base
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def pg_container() -> Generator[PostgresContainer, None, None]:
     with PostgresContainer("postgres:alpine") as postgres:
         yield postgres
@@ -23,8 +23,6 @@ def pg_container() -> Generator[PostgresContainer, None, None]:
 @pytest.fixture
 def engine(pg_container: PostgresContainer):
     connection_url = pg_container.get_connection_url().replace("psycopg2", "psycopg")
-    print(f"Using database URL: {connection_url}")
-    # connection_url = pg_container.get_connection_url()
     engine = create_engine(connection_url, echo=False)
     Base.metadata.create_all(engine)
     yield engine
@@ -34,9 +32,14 @@ def engine(pg_container: PostgresContainer):
 
 @pytest.fixture
 def session(engine: Engine) -> Generator[Session, None, None]:
-    with Session(engine) as session:
-        yield session
-        session.rollback()
+    with engine.connect() as connection:
+        transaction = connection.begin()
+        with Session(
+            bind=connection,
+            join_transaction_mode="create_savepoint",
+        ) as session:
+            yield session
+        transaction.rollback()
 
 
 @pytest.fixture
