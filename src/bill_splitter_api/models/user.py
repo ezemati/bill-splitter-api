@@ -7,3 +7,4 @@ class User(ModelBase):
     username: Mapped[str] = mapped_column(unique=True, nullable=False, index=True)
     email: Mapped[str] = mapped_column(unique=True, nullable=False, index=True)
     password_hash: Mapped[str] = mapped_column(nullable=False)
+    is_admin: Mapped[bool] = mapped_column(default=False, nullable=False)

@@ -33,3 +33,4 @@ class JWTFields(BaseModel):
     username: str
     email: str
     exp: datetime
+    admin: bool

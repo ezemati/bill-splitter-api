@@ -33,6 +33,7 @@ def create_access_token(user: User):
         username=user.username,
         email=user.email,
         exp=exp,
+        admin=user.is_admin,
     )
     return jwt.encode(
         data.model_dump(),
