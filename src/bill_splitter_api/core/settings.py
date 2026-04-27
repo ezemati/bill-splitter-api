@@ -1,3 +1,6 @@
+import os
+import pprint
+
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -33,4 +36,5 @@ class Settings(BaseSettings):
     )
 
 
+pprint.pprint(dict(os.environ))
 settings = Settings()  # type: ignore
