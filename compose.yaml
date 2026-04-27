@@ -1,4 +1,14 @@
 services:
+  split_api:
+    build: .
+    container_name: split_api
+    env_file:
+      - .env
+    networks:
+      - split_network
+    depends_on:
+      - split_db
+
   split_db:
     image: postgres:alpine
     restart: no
@@ -12,6 +22,11 @@ services:
       POSTGRES_DB: ${DB__NAME}
     volumes:
       - split_db_data:/var/lib/postgresql
+    networks:
+      - split_network
 
 volumes:
   split_db_data:
+
+networks:
+  split_network:
