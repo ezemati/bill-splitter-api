@@ -15,6 +15,7 @@ class DbSettings(BaseModel):
     name: str
     host: str
     port: int
+    run_migrations_on_startup: bool = False
 
     def get_sqlalchemy_url(self) -> str:
         return f"postgresql+psycopg://{self.user}:{self.password}@{self.host}:{self.port}/{self.name}"

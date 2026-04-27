@@ -5,15 +5,21 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from sqlalchemy import text
 
+from alembic import command, config
+
 from .admin import admin_router
 from .auth import auth_router
 from .bill import bill_router
+from .core import get_project_root_path, settings
 from .dependencies import SessionDep
 from .user import user_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    alembic_cfg = config.Config(get_project_root_path() / "alembic.ini")
+    if settings.db.run_migrations_on_startup:
+        command.upgrade(alembic_cfg, "head")
     yield
 
 
