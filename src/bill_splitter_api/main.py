@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 
 import uvicorn
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 from sqlalchemy import text
 
@@ -31,8 +32,8 @@ app.include_router(bill_router)
 
 
 @app.get("/")
-def root() -> dict[str, str]:
-    return {"message": "Hi there!"}
+def root() -> RedirectResponse:
+    return RedirectResponse(url="/docs")
 
 
 class HealthCheckResponse(BaseModel):
