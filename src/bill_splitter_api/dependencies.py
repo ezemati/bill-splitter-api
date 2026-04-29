@@ -3,11 +3,10 @@ from typing import Annotated, Any, Generator
 import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from .core import settings
+from .core import BaseSchema, settings
 from .db import engine
 from .models import User
 
@@ -22,7 +21,7 @@ type SessionDep = Annotated[Session, Depends(get_db)]
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login", refreshUrl="/auth/refresh")
 
 
-class TokenData(BaseModel):
+class TokenData(BaseSchema):
     user_id: str
 
 

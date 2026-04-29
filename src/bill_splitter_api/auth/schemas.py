@@ -1,34 +1,34 @@
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel
+from ..core import BaseSchema
 
 
-class LoginRequest(BaseModel):
+class LoginRequest(BaseSchema):
     username: str
     password: str
 
 
-class RegisterRequest(BaseModel):
+class RegisterRequest(BaseSchema):
     username: str
     password: str
     email: str
 
 
-class LoginResponse(BaseModel):
+class LoginResponse(BaseSchema):
     token_type: str = "bearer"
     access_token: str
     refresh_token: str
     user: UserResponse
 
 
-class UserResponse(BaseModel):
+class UserResponse(BaseSchema):
     id: UUID
     username: str
     email: str
 
 
-class JWTFields(BaseModel):
+class JWTFields(BaseSchema):
     sub: str
     username: str
     email: str

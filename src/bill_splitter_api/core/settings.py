@@ -1,18 +1,19 @@
 import os
 import pprint
 
-from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from .schemas import BaseSchema
 
-class JwtSettings(BaseModel):
+
+class JwtSettings(BaseSchema):
     secret_key: str
     algorithm: str
     access_token_expire_minutes: int = 5
     refresh_token_expire_minutes: int = 60 * 24 * 7
 
 
-class DbSettings(BaseModel):
+class DbSettings(BaseSchema):
     user: str
     password: str
     name: str

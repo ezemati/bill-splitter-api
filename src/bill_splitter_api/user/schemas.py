@@ -1,9 +1,10 @@
 from uuid import UUID
 
-from pydantic import BaseModel
+
+from ..core import BaseSchema
 
 
-class MeResponse(BaseModel):
+class MeResponse(BaseSchema):
     id: UUID
     username: str
     email: str
